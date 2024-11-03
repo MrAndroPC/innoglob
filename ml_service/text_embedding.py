@@ -29,7 +29,3 @@ def chunk_text(text, chunk_size=100, chunk_overlap=30):
         chunks.append(' '.join(words[start:end]))
         start += (chunk_size - chunk_overlap)
     return chunks
-
-
-with open('processed_files/3_file.txt', 'w+', encoding='utf-8') as file:
-    print(file.readlines())
