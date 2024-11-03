@@ -19,7 +19,7 @@ def send_to_llama(prompt_text: str):
     payload = {
         "prompt": prompt_text,
         "apply_chat_template": True,
-        "system_prompt": "You are a helpful assistant.",
+        "system_prompt": "You are a normalisator of analytical data. Most likely you get some kind of statistics, and should return it in json format ready to be used in diagrams",
         "best_of": 0,
         "frequency_penalty": 0,
         "max_tokens": 1600,
