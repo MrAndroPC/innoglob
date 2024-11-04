@@ -1,8 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
-from sqlalchemy.orm import Session
 import requests
-from ml_api.db.database import get_db
 from ml_service.db_processing import send_query_to_db
 
 
@@ -50,15 +48,9 @@ def send_to_llama(prompt_text: str):
     return response.json()
 
 @router.post("/send_rag_request")
-def send_rag_request(request: RAGRequest, db: Session = Depends(get_db)):
+def send_rag_request(request: RAGRequest):
     # Send the request text to the mock database query function
     db_response = mock_find_similar_embeddings(request.text)
-    if not db_response:
-        raise HTTPException(status_code=404, detail="No similar items found in the database.")
-    
-    # Format the query text and join the context list into a single prompt
-    prompt_text = f"{db_response['query_text']} {' '.join(db_response['context'])}"
-    
     # Send the prompt to LLaMA and get the response
     llama_response = send_to_llama(db_response)
     
@@ -93,3 +85,4 @@ def send_rag_request(request: RAGRequest, db: Session = Depends(get_db)):
 #     # Search for similar embeddings in the database
 #     results = find_similar_embeddings(embeddings_list, db)
 #     return {"similar_items": results}
+
