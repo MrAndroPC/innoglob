@@ -1,6 +1,6 @@
 import psycopg2
 import numpy as np
-from text_embedding import get_embeddings
+from ml_service.text_embedding import get_embeddings
 from sqlalchemy import create_engine
 from sqlalchemy import text
 from sqlalchemy.orm import sessionmaker

@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 import requests
 from ml_api.db.database import get_db
-from .....ml_service.db_processing import send_query_to_db
+from ml_service.db_processing import send_query_to_db
 
 
 router = APIRouter()
