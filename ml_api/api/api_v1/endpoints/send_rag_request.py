@@ -3,6 +3,8 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 import requests
 from ml_api.db.database import get_db
+from .....ml_service.db_processing import send_query_to_db
+
 
 router = APIRouter()
 
@@ -11,7 +13,7 @@ class RAGRequest(BaseModel):
 
 def mock_find_similar_embeddings(request_text):
     # Placeholder function to simulate database response
-    return {"query_text": "Sample query text", "context": ["Context part 1", "Context part 2"]}
+    return {"query_text": f"{request_text}", "context": [f"{send_query_to_db(request_text)}"]}
 
 def send_to_llama(prompt_text: str):
     llama_url = "https://mts-aidocprocessing-case-backup.olymp.innopolis.university/generate"
@@ -58,7 +60,7 @@ def send_rag_request(request: RAGRequest, db: Session = Depends(get_db)):
     prompt_text = f"{db_response['query_text']} {' '.join(db_response['context'])}"
     
     # Send the prompt to LLaMA and get the response
-    llama_response = send_to_llama(prompt_text)
+    llama_response = send_to_llama(db_response)
     
     return {"llama_response": llama_response}
 
